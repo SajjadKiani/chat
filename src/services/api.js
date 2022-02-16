@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const servicePath = 'http://127.0.0.1:8000/app/'
-const wsPath = `ws://127.0.0.1:8000/ws/chat`
+const servicePath = 'http://192.168.1.106:8000/app/'
+const wsPath = `ws://192.168.1.106:8000/ws/chat?token=`
 
 
 export const LoginAPI = (data) =>
@@ -34,4 +34,4 @@ export const MessageListAPI = (user,data) =>
             }
         })
 
-export const wsAPI = () => new WebSocket(wsPath);
+export const wsAPI = (user) => new WebSocket(wsPath+user);

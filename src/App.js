@@ -12,22 +12,20 @@ import {Link} from "react-router-dom";
 import {Grid, Stack, TextField} from "@mui/material";
 import Message from "./components/Message";
 import DrawerList from "./components/DrawerList";
-import {useEffect} from "react";
 import {MessageListAPI, UsersListAPI ,wsAPI} from "./services/api";
 import {useAuth} from "./contexts/auth";
 
 const drawerWidth = 240;
+let socket = ''
 
 function App (props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-
+    const {user} = useAuth()
     const [usersList , setUsersList] = React.useState([])
     const [messageList , setMessageList] = React.useState([])
-    const {user} = useAuth()
     const [messageValue , setMessageValue] = React.useState('')
     const [showMessageBar , setShowMessageBar] = React.useState(false)
-
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -45,6 +43,9 @@ function App (props) {
 
 
     const handleChat = (data) => {
+
+        socket.send(JSON.stringify({data: data.username,operation: 'chat'}));
+
         setShowMessageBar(true)
         MessageListAPI(user,data.username)
             .then((res) => {
@@ -56,9 +57,10 @@ function App (props) {
             })
     }
 
-    const socket = wsAPI()
-
     React.useEffect(() => {
+
+        // const socket = wsAPI(user)
+        socket = wsAPI(user)
 
         // usersList
         UsersListAPI(user)
@@ -72,14 +74,12 @@ function App (props) {
         socket.onopen = function(event) {
             console.log('open:');
             console.log(event);
-
         }
 
         socket.onmessage = function(event) {
-            let message = event.data;
+            const message = event.data;
 
-            console.log('server say:')
-            console.log(event)
+            setMessageList(prev => [...prev,JSON.parse(message)])
         }
 
 
@@ -100,7 +100,15 @@ function App (props) {
     },[])
 
     const handleSendMessage = () => {
-        socket.send(JSON.stringify({message: messageValue}));
+        const newMessage = {
+            text: messageValue,
+            date: Date.now(),
+            me: true,
+        }
+        setMessageList(prev => [...prev,newMessage])
+        socket.send(JSON.stringify({data: messageValue,operation: 'send'}));
+
+        setMessageValue('')
     }
 
     return (

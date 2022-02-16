@@ -1,7 +1,7 @@
 import React from "react";
 import {ThemeProvider} from "@emotion/react";
 import {createTheme} from "@mui/material";
-import {blue,  green, lightGreen, orange, red} from "@mui/material/colors";
+import {blue, green, lightGreen, orange, purple, red} from "@mui/material/colors";
 
 const ThemeContext = React.createContext(undefined);
 
@@ -17,7 +17,7 @@ export default function MyThemeProvider ({children}) {
 
     const theme = createTheme({
         palette: {
-            primary: blue,
+            primary: green,
             mode: darkMode
         }
     });

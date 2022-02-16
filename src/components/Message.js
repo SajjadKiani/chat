@@ -11,7 +11,7 @@ export default function Message ({data}) {
                 {data.text}
             </Typography>
             <Typography variant={'caption'} textAlign={'end'} >
-                {data.date.split('T')[1].slice(0,5)}
+                {/*{data.date.split('T')[1].slice(0,5)}*/}
             </Typography>
         </Paper>
     )
