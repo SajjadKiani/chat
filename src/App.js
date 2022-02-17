@@ -14,9 +14,10 @@ import Message from "./components/Message";
 import DrawerList from "./components/DrawerList";
 import {MessageListAPI, UsersListAPI ,wsAPI} from "./services/api";
 import {useAuth} from "./contexts/auth";
+import {useSocket} from "./contexts/webSocket";
 
 const drawerWidth = 240;
-let socket = ''
+// let socket = ''
 
 function App (props) {
     const { window } = props;
@@ -26,6 +27,7 @@ function App (props) {
     const [messageList , setMessageList] = React.useState([])
     const [messageValue , setMessageValue] = React.useState('')
     const [showMessageBar , setShowMessageBar] = React.useState(false)
+    const {socket} = useSocket()
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -60,7 +62,7 @@ function App (props) {
     React.useEffect(() => {
 
         // const socket = wsAPI(user)
-        socket = wsAPI(user)
+        // socket = wsAPI(user)
 
         // usersList
         UsersListAPI(user)
