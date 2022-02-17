@@ -12,7 +12,7 @@ import {Link} from "react-router-dom";
 import {Grid, Stack, TextField} from "@mui/material";
 import Message from "./components/Message";
 import DrawerList from "./components/DrawerList";
-import {MessageListAPI, UsersListAPI ,wsAPI} from "./services/api";
+import {MessageListAPI, UsersListAPI } from "./services/api";
 import {useAuth} from "./contexts/auth";
 import {useSocket} from "./contexts/webSocket";
 
@@ -28,6 +28,7 @@ function App (props) {
     const [messageValue , setMessageValue] = React.useState('')
     const [showMessageBar , setShowMessageBar] = React.useState(false)
     const {socket} = useSocket()
+    const [direction , setDirection] = React.useState(true)
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -60,9 +61,6 @@ function App (props) {
     }
 
     React.useEffect(() => {
-
-        // const socket = wsAPI(user)
-        // socket = wsAPI(user)
 
         // usersList
         UsersListAPI(user)
@@ -100,6 +98,11 @@ function App (props) {
         }
 
     },[])
+
+    const handleMessageValue = (val) => {
+        setMessageValue(val)
+        setDirection(val[0].match( /[a-zA-Z0-9]/g) )
+    }
 
     const handleSendMessage = () => {
         const newMessage = {
@@ -201,7 +204,8 @@ function App (props) {
                         label={'massage'}
                         sx={{flexGrow: 1}}
                         value={messageValue}
-                        onChange={(e) => setMessageValue(e.target.value)}
+                        onChange={(e) => handleMessageValue(e.target.value)}
+                        dir={ direction ? '' : 'rtl'}
                     />
                     <IconButton>
                         <AttachFile />
