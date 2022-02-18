@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {AttachFile, MoreVert, Send} from "@mui/icons-material";
 import {Link} from "react-router-dom";
-import {Grid, Stack, TextField} from "@mui/material";
+import {CircularProgress, Grid, Stack, TextField} from "@mui/material";
 import Message from "./components/Message";
 import DrawerList from "./components/DrawerList";
 import {MessageListAPI, UsersListAPI } from "./services/api";
@@ -28,7 +28,9 @@ function App (props) {
     const [messageValue , setMessageValue] = React.useState('')
     const [showMessageBar , setShowMessageBar] = React.useState(false)
     const {socket} = useSocket()
-    const [direction , setDirection] = React.useState(true)
+    const [direction , setDirection] = React.useState(true);
+    const [title , setTitle] = React.useState('Connecting...')
+    const [loading , setLoading] = React.useState(true)
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -46,7 +48,7 @@ function App (props) {
 
 
     const handleChat = (data) => {
-
+        setTitle(data.username)
         socket.send(JSON.stringify({data: data.username,operation: 'chat'}));
 
         setShowMessageBar(true)
@@ -74,6 +76,9 @@ function App (props) {
         socket.onopen = function(event) {
             console.log('open:');
             console.log(event);
+
+            setTitle('')
+            setLoading(false)
         }
 
         socket.onmessage = function(event) {
@@ -91,6 +96,9 @@ function App (props) {
         socket.onclose = function (event) {
             console.log('close:')
             console.log(event)
+
+            setTitle('Connecting...')
+            setLoading(true)
         }
 
         return () => {
@@ -137,7 +145,8 @@ function App (props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        {'User Name'}
+                        {loading && <CircularProgress color={'inherit'} sx={{mx: 2}} />}
+                        {title}
                     </Typography>
                     <IconButton component={Link} to={'/login'} ><MoreVert /></IconButton>
                 </Toolbar>
