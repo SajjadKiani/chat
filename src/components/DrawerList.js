@@ -18,7 +18,7 @@ export default  function DrawerList ({data,handleChat}) {
         <div>
             <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
                 <Typography variant="h6" component="div">
-                    SajiGram
+                    SajGram
                 </Typography>
                 <Switch checked={darkMode === 'dark'} onChange={toggleTheme}/>
             </Toolbar>

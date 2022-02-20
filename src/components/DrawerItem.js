@@ -2,8 +2,6 @@ import ListItem from "@mui/material/ListItem";
 import {Avatar, ListItemAvatar} from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 
 export default function DrawerItem ({data,handleChat}) {
 
@@ -21,7 +19,7 @@ export default function DrawerItem ({data,handleChat}) {
                 primary={data.username}
                 secondary={
                     <React.Fragment>
-                        message
+                        {data['first_name'] + " " + data['last_name']}
                     </React.Fragment>
                 }
             />
