@@ -12,7 +12,7 @@ ReactDOM.render(
     <AuthProvider>
         <MyThemeProvider>
             <SocketProvider>
-                <BrowserRouter>
+                <BrowserRouter basename='chat/'>
                     <Switch>
                         {Routes.map((props,i) =>
                             <Route {...props} key={i} />
