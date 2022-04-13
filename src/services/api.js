@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const servicePath = 'http://192.168.1.106:8000/app/'
+const servicePath = 'http://188.121.109.219:8000/app/'
 const wsPath = `ws://192.168.1.106:8000/ws/chat?token=`
 
 
