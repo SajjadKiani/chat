@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/SajjadKiani/chat/static/css/main.754ebb54.css",
+    "main.js": "/SajjadKiani/chat/static/js/main.006d719a.js",
+    "index.html": "/SajjadKiani/chat/index.html",
+    "main.754ebb54.css.map": "/SajjadKiani/chat/static/css/main.754ebb54.css.map",
+    "main.006d719a.js.map": "/SajjadKiani/chat/static/js/main.006d719a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.754ebb54.css",
+    "static/js/main.006d719a.js"
+  ]
+}
