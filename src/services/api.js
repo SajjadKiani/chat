@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const servicePath = 'http://188.121.109.219:8000/app/'
-const wsPath = `ws://192.168.1.106:8000/ws/chat?token=`
+const servicePath = 'http://localhost:8001/app/'
+const wsPath = `ws://localhost:8001/ws/chat?token=`
 
 
 export const LoginAPI = (data) =>

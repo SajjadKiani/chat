@@ -1,3 +1,9 @@
+
+@font-face {
+    font-family: 'Yekan';
+    src: url('./asset/font/Iranyekan.ttf');
+}
+
 body {
     margin: 0;
     padding: 0;

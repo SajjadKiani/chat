@@ -9,14 +9,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import {AttachFile, MoreVert, Send} from "@mui/icons-material";
 import {Link} from "react-router-dom";
-import {CircularProgress, Grid, Stack, TextField} from "@mui/material";
+import {Chip, CircularProgress, Grid, Stack, TextField} from "@mui/material";
 import Message from "./components/Message";
 import DrawerList from "./components/DrawerList";
 import {MessageListAPI, UsersListAPI } from "./services/api";
 import {useAuth} from "./contexts/auth";
 import {useSocket} from "./contexts/webSocket";
+import { useHistory } from 'react-router-dom';
+import MyDialog from "./components/MyDialog";
 
-const drawerWidth = 240;
+const drawerWidth = 340;
 // let socket = ''
 
 function App (props) {
@@ -31,6 +33,8 @@ function App (props) {
     const [direction , setDirection] = React.useState(true);
     const [title , setTitle] = React.useState('Connecting...')
     const [loading , setLoading] = React.useState(true)
+    const history = useHistory()
+    const [show , setShow ] = React.useState(false)
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -62,6 +66,12 @@ function App (props) {
             })
     }
 
+    function keyPress(e){
+        if(e.keyCode == 13){
+            handleSendMessage();
+        }
+    }
+
     React.useEffect(() => {
 
         // usersList
@@ -71,6 +81,8 @@ function App (props) {
             })
             .catch((err) => {
                 console.log(err)
+                if (err.response.status === 401 )
+                    history.push('/login')
             })
 
         socket.onopen = function(event) {
@@ -148,7 +160,7 @@ function App (props) {
                         {loading && <CircularProgress color={'inherit'} sx={{mx: 2}} />}
                         {title}
                     </Typography>
-                    <IconButton component={Link} to={'/login'} ><MoreVert /></IconButton>
+                    <IconButton onClick={() => setShow(true)} ><MoreVert /></IconButton>
                 </Toolbar>
             </AppBar>
             <Box
@@ -183,9 +195,19 @@ function App (props) {
                     <DrawerList data={usersList} handleChat={handleChat} />
                 </Drawer>
             </Box>
+
+
+            <Grid sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } , height: '100vh',
+                display: !showMessageBar ? 'flex' : 'none',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <Chip label="select a chat to start messaging" />
+            </Grid>
+
             <Grid
                 sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } , height: '100vh',
-                display: 'flex',
+                display: showMessageBar ? 'flex' : 'none',
                 flexDirection: 'column',
                 }}
             >
@@ -207,7 +229,7 @@ function App (props) {
                     }
                 </Stack>
 
-                <Grid display={showMessageBar ? 'flex' : 'none'} gap={2} >
+                <Grid display={'flex'} gap={2} >
                     <TextField
                         variant={'outlined'}
                         label={'massage'}
@@ -215,9 +237,12 @@ function App (props) {
                         value={messageValue}
                         onChange={(e) => handleMessageValue(e.target.value)}
                         dir={ direction ? '' : 'rtl'}
+                        onKeyDown={(e) => keyPress(e)}
                     />
-                    <IconButton>
+                    <IconButton component={'label'}>
+                        <input type="file" hidden  />
                         <AttachFile />
+
                     </IconButton>
                     <IconButton onClick={handleSendMessage}>
                         <Send />
@@ -226,6 +251,8 @@ function App (props) {
                 </Grid>
 
             </Grid>
+
+            <MyDialog show={show} setShow={setShow} />
 
         </Box>
     );

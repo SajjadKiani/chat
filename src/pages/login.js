@@ -31,6 +31,7 @@ export default function Login () {
         LoginAPI(data)
             .then((res) => {
                 toggleAuth(res.data.token)
+                history.replace('/')
             })
             .catch((err) => {
                 console.log(err)
